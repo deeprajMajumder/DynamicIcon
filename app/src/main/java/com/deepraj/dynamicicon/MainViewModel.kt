@@ -94,7 +94,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    // use this for second icon
+    // use this for third icon
      fun changeIconToThirdIcon(context: Context) {
         try {
             // Enable the Alias three component
