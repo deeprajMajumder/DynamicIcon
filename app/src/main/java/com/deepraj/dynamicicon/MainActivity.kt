@@ -1,16 +1,13 @@
 package com.deepraj.dynamicicon
 
-import android.content.ComponentName
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,8 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,15 +29,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.deepraj.dynamicicon.ui.theme.DynamicIconTheme
 
 class MainActivity : ComponentActivity() {
-    private val mainActivity = BuildConfig.main_activity
-    private val mainActivityAliasTwo = BuildConfig.main_activity_alias_two
-    private val mainActivityAliasThree = BuildConfig.main_activity_alias_three
+
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,176 +51,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screenn()
+                    Screen()
                 }
             }
         }
     }
 
-    // use this for default icon
-    private fun changeIconToMain() {
-        try {
-            // Disable the Alias three component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasThree
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Disable the Alias two component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasTwo
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Enable the main activity component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivity
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Log and display a toast message indicating that the main logo is enabled
-            Log.d("MainLogo", "Main Logo Enabled")
-            Toast.makeText(this@MainActivity, "Main Logo Enabled.", Toast.LENGTH_SHORT).show()
-        } catch (e: java.lang.Exception) {
-            Log.e("Exception", e.toString())
-        }
-    }
-
-    // use this for second icon
-    private fun changeIconToSecondIcon() {
-        try {
-            // Disable the Alias three component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasThree
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Enable the Alias two component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasTwo
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Enable the main activity component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivity
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Log and display a toast message indicating that the Second logo is enabled
-            Log.d("SecondLogo", "Second Logo Enabled")
-            Toast.makeText(this@MainActivity, "Second Logo Enabled.", Toast.LENGTH_SHORT).show()
-        } catch (e: java.lang.Exception) {
-            Log.e("Exception", e.toString())
-        }
-    }
-
-    // use this for second icon
-    private fun changeIconToThirdIcon() {
-        try {
-            // Enable the Alias three component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasThree
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Enable the Alias two component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivityAliasTwo
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Enable the main activity component
-            packageManager.setComponentEnabledSetting(
-                ComponentName(
-                    this@MainActivity,
-                    mainActivity
-                ),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-
-            // Log and display a toast message indicating that the Third logo is enabled
-            Log.d("ThirdLogo", "Third Logo Enabled")
-            Toast.makeText(this@MainActivity, "Third Logo Enabled.", Toast.LENGTH_SHORT).show()
-        } catch (e: java.lang.Exception) {
-            Log.e("Exception", e.toString())
-        }
-    }
-
     @Composable
     fun Screen(
-        on30Click: () -> Unit = {},
-        on60Click: () -> Unit = {},
-        on90Click: () -> Unit = {},
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            Button(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 16.dp),
-                onClick = on30Click
-            ) {
-                Text(text = "30")
-            }
-
-            Button(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(end = 16.dp),
-                onClick = on60Click
-            ) {
-                Text(text = "60")
-            }
-
-            Button(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 16.dp),
-                onClick = on90Click
-            ) {
-                Text(text = "90")
-            }
-        }
-    }
-
-    @Composable
-    fun Screenn(
         onIconSelected: (Int) -> Unit = {},
     ) {
         var selectedIcon by remember { mutableIntStateOf(0) }
@@ -229,6 +68,14 @@ class MainActivity : ComponentActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text (
+                text = "You may select any app icon from the options:",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
@@ -240,11 +87,18 @@ class MainActivity : ComponentActivity() {
                             selectedIcon = 1
                             onIconSelected(1)
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .size(72.dp)
+                        .clip(CircleShape)
+                        .background(if (selectedIcon == 1) Color.LightGray else Color.Transparent)
+
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_launcher_foreground),
-                        contentDescription = "Icon 1"
+                        contentDescription = "Icon 1",
+                        modifier = Modifier.size(72.dp)
                     )
                 }
 
@@ -255,11 +109,17 @@ class MainActivity : ComponentActivity() {
                             selectedIcon = 2
                             onIconSelected(2)
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .size(72.dp)
+                        .clip(CircleShape)
+                        .background(if (selectedIcon == 2) Color.LightGray else Color.Transparent)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_launcher_2_foreground),
-                        contentDescription = "Icon 2"
+                        contentDescription = "Icon 2",
+                        modifier = Modifier.size(72.dp)
                     )
                 }
 
@@ -270,11 +130,17 @@ class MainActivity : ComponentActivity() {
                             selectedIcon = 3
                             onIconSelected(3)
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .size(72.dp)
+                        .clip(CircleShape)
+                        .background(if (selectedIcon == 3) Color.LightGray else Color.Transparent)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_launcher_3_foreground),
-                        contentDescription = "Icon 3"
+                        contentDescription = "Icon 3",
+                        modifier = Modifier.size(72.dp)
                     )
                 }
             }
@@ -282,22 +148,22 @@ class MainActivity : ComponentActivity() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { /* Handle action based on selected icon */
+                onClick = { // Handle action based on selected icon
                           when (selectedIcon) {
                               1-> {
-                                  changeIconToMain()
+                                  mainViewModel.changeIconToMain(this@MainActivity)
                               }
                               2-> {
-                                  changeIconToSecondIcon()
+                                  mainViewModel.changeIconToSecondIcon(this@MainActivity)
                               }
                               3-> {
-                                  changeIconToThirdIcon()
+                                  mainViewModel.changeIconToThirdIcon(this@MainActivity)
                               }
                           }
                       },
                 enabled = selectedIcon != 0
             ) {
-                Text(text = "Select")
+                Text(text = "Apply")
             }
         }
     }
